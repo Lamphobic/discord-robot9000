@@ -1,0 +1,4 @@
+entity-packages: com.mattmerr.dr9k.model
+querybean-packages: com.mattmerr.dr9k.model
+transactional-packages: com.mattmerr.dr9k.model
+profile-location: true

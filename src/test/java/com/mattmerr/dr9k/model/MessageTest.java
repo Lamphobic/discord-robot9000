@@ -5,21 +5,23 @@ import com.mattmerr.dr9k.model.Message;
 import io.ebean.DB;
 import org.junit.Test;
 
+import static com.google.common.truth.Truth.assertThat;
+
 public class MessageTest {
 
   @Test
   public void insertFindDelete() {
-
     Message message = new Message();
-//    message.setContents();
+    message.contents = "foo";
+    message.userId = "user";
 
-    // insert the customer in the DB
-//    DB.save(customer);
+    DB.save(message);
 
-    // Find by Id
-//    Customer foundHello = database.find(Customer.class, 1);
+    Message found = DB.find(Message.class, "foo");
+    assertThat(found).isNotNull();
+    assertThat(found.userId).isEqualTo("user");
 
-    // delete the customer
-//    DB.delete(customer);
+    assertThat(DB.delete(message)).isTrue();
+    assertThat(DB.delete(message)).isFalse();
   }
 }

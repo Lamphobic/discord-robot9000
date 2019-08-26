@@ -1,7 +1,7 @@
 plugins {
-    id 'idea'
     id 'java'
-//    id('io.ebean') version '11.42.1'
+    id 'idea'
+    id 'io.ebean' version '11.43.2'
 }
 
 group 'com.mattmerr'
@@ -15,12 +15,24 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.28'
+
     compile 'net.dv8tion:JDA:4.0.0_45'
 
-    compile 'io.ebean:ebean:11.42.1'
-    compile 'io.ebean:ebean-querybean:11.42.1'
-    annotationProcessor 'io.ebean:querybean-generator:11.42.1'
-    testCompile 'io.ebean:ebean-test:11.42.1'
+    compile 'io.ebean:ebean:11.43.2'
+    compile 'io.ebean:ebean-querybean:11.43.2'
+    annotationProcessor 'io.ebean:querybean-generator:11.43.2'
+    testImplementation 'io.ebean:ebean-test:11.43.2'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'com.google.truth:truth:1.0'
+}
+
+ebean {
+    debugLevel = 0 //0 - 9
+}
+
+test {
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
 }
