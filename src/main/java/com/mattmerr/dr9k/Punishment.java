@@ -49,7 +49,7 @@ public class Punishment{
         return ret;
     }
 
-    boolean getIsOver(){
+    boolean isOver(){
         Instant now = Instant.now();
         Duration timePassed = Duration.between(punishmentStart, now);
         long seconds = ((long)Math.pow(2,severityLevel));
@@ -96,9 +96,7 @@ public class Punishment{
 
     @Override
     public int hashCode() {
-        int result = Long.hashCode(severityLevel);
-        result = 31 * result + punishmentStart.hashCode();
-        return result;
+        return Objects.hash(severityLevel, punishmentStart);
     }
 
     @Override
