@@ -30,21 +30,24 @@ public class BlacklistEntry extends Model {
   public String getDomain() {
     return domain;
   }
-  public void setDomain(String domain) {
+  public BlacklistEntry setDomain(String domain) {
     this.domain = domain;
+    return this;
   }
 
   public String getContents() {
     return contents;
   }
-  public void setContents(String contents) {
+  public BlacklistEntry setContents(String contents) {
     this.contents = contents;
+    return this;
   }
 
   public String getDiscordId() {
     return discordId;
   }
-  public void setDiscordId(String discordId) {
+  public BlacklistEntry setDiscordId(String discordId) {
     this.discordId = discordId;
+    return this;
   }
 }
