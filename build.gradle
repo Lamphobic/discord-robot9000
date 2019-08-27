@@ -7,7 +7,8 @@ plugins {
 group 'com.mattmerr'
 version '0.1'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
     jcenter()
@@ -15,9 +16,11 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.28'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.28'
+    compile group: 'com.google.inject', name: 'guice', version: '4.2.2'
 
     compile 'net.dv8tion:JDA:4.0.0_45'
+    compile 'org.tomlj:tomlj:1.0.0'
 
     compile 'io.ebean:ebean:11.43.2'
     compile 'io.ebean:ebean-querybean:11.43.2'

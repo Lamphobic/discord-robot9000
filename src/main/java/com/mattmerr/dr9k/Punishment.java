@@ -12,12 +12,12 @@ public class Punishment{
     private final Instant punishmentStart;
     private final int decaySeconds = 30; //21600 for 6 hours
 
-    Punishment(int level, Instant startTime){
+    public Punishment(int level, Instant startTime){
         this.severityLevel = level;
         this.punishmentStart = startTime;
     }
 
-    String getHumanTimeRemaining(){
+    public String getHumanTimeRemaining(){
         Instant now = Instant.now();
         Duration timePassed = Duration.between(punishmentStart, now);
         long seconds = ((long)Math.pow(2,severityLevel));
@@ -49,7 +49,7 @@ public class Punishment{
         return ret;
     }
 
-    boolean isOver(){
+    public boolean isOver(){
         Instant now = Instant.now();
         Duration timePassed = Duration.between(punishmentStart, now);
         long seconds = ((long)Math.pow(2,severityLevel));
@@ -60,24 +60,24 @@ public class Punishment{
         return false;
     }
 
-    boolean getPunishmentDecayed(){
+    public boolean getPunishmentDecayed(){
         int decay = getPunishmentDecay();
 
         return severityLevel <= decay;
     }
 
-    int getPunishmentDecay(){
+    public int getPunishmentDecay(){
         Instant now = Instant.now();
         Duration timePassed = Duration.between(punishmentStart, now);
         long secondsPassed = timePassed.getSeconds();
         return (int)secondsPassed/decaySeconds;
     }
 
-    int getSeverityLevel(){
+    public int getSeverityLevel(){
         return severityLevel;
     }
 
-    Instant getPunishmentStart(){
+    public Instant getPunishmentStart(){
         return punishmentStart;
     }
 

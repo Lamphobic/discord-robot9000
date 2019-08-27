@@ -131,3 +131,6 @@ gradle-app.setting
 
 # Ebean Plugin
 .idea/ebean-plugin.xml
+.idea/compiler.xml
+
+config-secret.toml
