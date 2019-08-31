@@ -79,8 +79,7 @@ public class BotService extends ListenerAdapter {
         if (userPunishment.getPunishmentDecayed()) {
           unpunishUser(user);
         }
-      }
-      else {
+      } else {
         System.out.println("Removing message from user.");
         event.getMessage().delete().queue();
         user.openPrivateChannel().queue((channel) -> channel.sendMessage(String
@@ -106,8 +105,7 @@ public class BotService extends ListenerAdapter {
                     + "last %s",
                 location, event.getMessage().getContentRaw(),
                 getPunishment(user).getHumanTimeRemaining())).queue());
-      }
-      else {
+      } else {
         punishUser(user, 1);
         user.openPrivateChannel().queue((channel) -> channel.sendMessage(String
             .format(
