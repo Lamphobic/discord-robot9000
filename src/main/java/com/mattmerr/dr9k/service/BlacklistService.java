@@ -30,8 +30,7 @@ public class BlacklistService {
           .setAuthorId(message.getAuthor().getId())
           .setMessageId(message.getId());
       db.insert(entry);
-    }
-    catch (Exception exception) {
+    } catch (Exception exception) {
       logger.error("Error inserting message", exception);
     }
   }
@@ -54,7 +53,8 @@ public class BlacklistService {
       Message message, Collection<String> channels) {
     return db.createQuery(BlacklistEntry.class).where()
         .eq("contents", message.getContentStripped())
-        .isIn("channelId", channels).eq("guildId", message.getGuild().getId())
+        .isIn("channelId", channels)
+        .eq("guildId", message.getGuild().getId())
         .exists();
   }
 

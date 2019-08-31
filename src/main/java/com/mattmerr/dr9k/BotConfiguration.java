@@ -23,8 +23,7 @@ public class BotConfiguration {
         for (var tomlError : toml.errors()) {
           logger.error(tomlError.toString());
         }
-      }
-      else {
+      } else {
         if (discordToken == null) {
           discordToken = toml.getString("discord.token");
         }
@@ -32,8 +31,7 @@ public class BotConfiguration {
           discordBotName = toml.getString("discord.botName");
         }
       }
-    }
-    catch (IOException ioException) {
+    } catch (IOException ioException) {
       logger.error("Error reading TOML configuration file", ioException);
     }
     return this;

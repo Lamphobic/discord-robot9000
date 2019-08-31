@@ -34,8 +34,7 @@ public class BotModule extends AbstractModule {
       return new JDABuilder()
           .setToken(configuration.getDiscordToken())
           .build();
-    }
-    catch (LoginException loginException) {
+    } catch (LoginException loginException) {
       logger.error("Could not construct JDA", loginException);
       System.exit(1);
       return null;
@@ -49,8 +48,7 @@ public class BotModule extends AbstractModule {
       var dbConf = new DatabaseConfig();
       dbConf.loadFromProperties();
       return DatabaseFactory.create(dbConf);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       logger.error("Could not construct Database", e);
       System.exit(1);
       return null;

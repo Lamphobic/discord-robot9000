@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Punishment {
+
   private final int severityLevel;
   private final Instant punishmentStart;
   private final int decaySeconds = 30; //21600 for 6 hours
@@ -26,17 +27,17 @@ public class Punishment {
       return "none";
     }
 
-    long years = seconds/ChronoUnit.YEARS.getDuration().getSeconds();
+    long years = seconds / ChronoUnit.YEARS.getDuration().getSeconds();
     seconds %= ChronoUnit.YEARS.getDuration().getSeconds();
-    long months = seconds/ChronoUnit.MONTHS.getDuration().getSeconds();
+    long months = seconds / ChronoUnit.MONTHS.getDuration().getSeconds();
     seconds %= ChronoUnit.MONTHS.getDuration().getSeconds();
-    long weeks = seconds/ChronoUnit.WEEKS.getDuration().getSeconds();
+    long weeks = seconds / ChronoUnit.WEEKS.getDuration().getSeconds();
     seconds %= ChronoUnit.WEEKS.getDuration().getSeconds();
-    long days = seconds/ChronoUnit.DAYS.getDuration().getSeconds();
+    long days = seconds / ChronoUnit.DAYS.getDuration().getSeconds();
     seconds %= ChronoUnit.DAYS.getDuration().getSeconds();
-    long hours = seconds/ChronoUnit.HOURS.getDuration().getSeconds();
+    long hours = seconds / ChronoUnit.HOURS.getDuration().getSeconds();
     seconds %= ChronoUnit.HOURS.getDuration().getSeconds();
-    long minutes = seconds/ChronoUnit.MINUTES.getDuration().getSeconds();
+    long minutes = seconds / ChronoUnit.MINUTES.getDuration().getSeconds();
     seconds %= ChronoUnit.MINUTES.getDuration().getSeconds();
     String ret = ""; //TODO: swtich to stringbuilder" "
     if (years > 0) {
@@ -84,7 +85,7 @@ public class Punishment {
     Instant now = Instant.now();
     Duration timePassed = Duration.between(punishmentStart, now);
     long secondsPassed = timePassed.getSeconds();
-    return (int) secondsPassed/decaySeconds;
+    return (int) secondsPassed / decaySeconds;
   }
 
   public int getSeverityLevel() {
@@ -108,8 +109,8 @@ public class Punishment {
       return false;
     }
     Punishment e = (Punishment) o;
-    return Objects.equals(severityLevel, e.severityLevel) && Objects
-        .equals(punishmentStart, e.punishmentStart);
+    return Objects.equals(severityLevel, e.severityLevel)
+        && Objects.equals(punishmentStart, e.punishmentStart);
   }
 
   @Override
