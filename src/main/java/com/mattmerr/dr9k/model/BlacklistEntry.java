@@ -11,7 +11,6 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "blacklist_entries")
-@UniqueConstraint(columnNames = {"contents", "domain"})
 public class BlacklistEntry extends Model {
 
   @Id
