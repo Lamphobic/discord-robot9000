@@ -9,9 +9,11 @@ import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,13 +23,16 @@ public class BotService extends ListenerAdapter {
   private static final Logger logger = LoggerFactory.getLogger(BotConfiguration.class);
 
   private final JDA jda;
+  private final BlacklistService blacklistService;
 
   private static HashSet<String> previous = new HashSet<>();
   private static HashMap<Long, Punishment> punishments = new HashMap<>();
 
   @Inject
-  BotService(JDA jda) {
+  BotService(JDA jda, BlacklistService blacklistService) {
     this.jda = jda;
+    this.blacklistService = blacklistService;
+
     this.jda.addEventListener(this);
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override

@@ -7,47 +7,87 @@ import io.ebean.annotation.NotNull;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "blacklist_entries")
+@UniqueConstraint(columnNames = {"contents", "domain"})
 public class BlacklistEntry extends Model {
 
   @Id
+  private Long id;
+
+  @NotNull
   @Length(512)
   private String contents;
 
   @NotNull
   @Length(512)
-  private String domain;
+  private String guildId;
 
   @NotNull
   @Length(512)
-  private String discordId;
+  private String channelId;
 
-  public BlacklistEntry() {
+  @NotNull
+  @Length(512)
+  private String authorId;
+
+  @NotNull
+  @Length(512)
+  private String messageId;
+
+  public Long getId() {
+    return id;
   }
 
-  public String getDomain() {
-    return domain;
-  }
-  public BlacklistEntry setDomain(String domain) {
-    this.domain = domain;
+  public BlacklistEntry setId(Long id) {
+    this.id = id;
     return this;
   }
 
   public String getContents() {
     return contents;
   }
+
   public BlacklistEntry setContents(String contents) {
     this.contents = contents;
     return this;
   }
 
-  public String getDiscordId() {
-    return discordId;
+  public String getGuildId() {
+    return guildId;
   }
-  public BlacklistEntry setDiscordId(String discordId) {
-    this.discordId = discordId;
+
+  public BlacklistEntry setGuildId(String guildId) {
+    this.guildId = guildId;
+    return this;
+  }
+
+  public String getChannelId() {
+    return channelId;
+  }
+
+  public BlacklistEntry setChannelId(String channelId) {
+    this.channelId = channelId;
+    return this;
+  }
+
+  public String getMessageId() {
+    return messageId;
+  }
+
+  public BlacklistEntry setMessageId(String messageId) {
+    this.messageId = messageId;
+    return this;
+  }
+
+  public String getAuthorId() {
+    return authorId;
+  }
+
+  public BlacklistEntry setAuthorId(String authorId) {
+    this.authorId = authorId;
     return this;
   }
 }

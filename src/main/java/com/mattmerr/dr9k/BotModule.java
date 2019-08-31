@@ -1,13 +1,13 @@
 package com.mattmerr.dr9k;
 
-import com.mattmerr.dr9k.service.BotService;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import io.ebean.Database;
+import io.ebean.DatabaseFactory;
+import io.ebean.config.DatabaseConfig;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +37,21 @@ public class BotModule extends AbstractModule {
     }
     catch (LoginException loginException) {
       logger.error("Could not construct JDA", loginException);
+      System.exit(1);
+      return null;
+    }
+  }
+
+  @Inject
+  @Provides
+  private Database provideDatabase() {
+    try {
+      var dbConf = new DatabaseConfig();
+      dbConf.loadFromProperties();
+      return DatabaseFactory.create(dbConf);
+    }
+    catch (Exception e) {
+      logger.error("Could not construct Database", e);
       System.exit(1);
       return null;
     }
