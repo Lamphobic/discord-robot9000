@@ -9,7 +9,8 @@ import java.nio.file.Path;
 
 public class BotConfiguration {
 
-  private static final Logger logger = LoggerFactory.getLogger(BotConfiguration.class);
+  private static final Logger logger =
+      LoggerFactory.getLogger(BotConfiguration.class);
 
   private String discordToken = null;
   private String discordBotName = null;
