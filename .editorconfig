@@ -1,0 +1,26 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# 4 space indentation
+[*.{java, yaml, toml}]
+charset = utf-8
+indent_style = space
+indent_size = 2
+# max_line_length = 100
+trim_trailing_whitespace = true
+continuation_indent_size = 4
+indent_brace_style = K&R
+wildcard_import_limit = 999
+spaces_around_operators = true
+spaces_around_brackets = true
+
+[build.gradle]
+indent_style = space
+indent_size = 4
