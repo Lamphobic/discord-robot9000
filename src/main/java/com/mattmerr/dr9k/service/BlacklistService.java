@@ -28,7 +28,8 @@ public class BlacklistService {
       var entry = new BlacklistEntry().setGuildId(message.getGuild().getId())
           .setChannelId(message.getChannel().getId())
           .setAuthorId(message.getAuthor().getId())
-          .setMessageId(message.getId());
+          .setMessageId(message.getId())
+          .setContents(message.getContentRaw());
       db.insert(entry);
     } catch (Exception exception) {
       logger.error("Error inserting message", exception);
@@ -38,7 +39,7 @@ public class BlacklistService {
   public boolean violatesUserUniqueness(Message message) {
     return db.createQuery(BlacklistEntry.class).where()
         .eq("contents", message.getContentStripped())
-        .eq("userId", message.getAuthor().getId())
+        .eq("authorId", message.getAuthor().getId())
         .eq("guildId", message.getGuild().getId()).exists();
   }
 
