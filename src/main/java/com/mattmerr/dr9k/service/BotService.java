@@ -6,6 +6,7 @@ import com.mattmerr.dr9k.Punishment;
 import com.google.inject.Inject;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -91,7 +92,7 @@ public class BotService extends ListenerAdapter {
         return;
       }
     }
-    if (seenMessage(event.getMessage().getContentRaw())) {
+    if (seenMessage(event.getMessage())) {
       System.out.println("Muting " + user.getName());
       event.getMessage().delete().queue();
       if (userIsBeingPunished(user)) {
@@ -116,8 +117,8 @@ public class BotService extends ListenerAdapter {
     }
   }
 
-  private boolean seenMessage(String message) {
-    return !previous.add(message);
+  private boolean seenMessage(Message message) {
+    return blacklistService.violatesUserUniqueness(message);
   }
 
   private boolean userIsBeingPunished(User user) {
