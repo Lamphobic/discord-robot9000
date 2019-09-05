@@ -132,7 +132,7 @@ public class BotService extends ListenerAdapter {
   }
 
   private Punishment getPunishment(User user) {
-    if (punishments.containsKey(user)) {
+    if (punishments.containsKey(user.getIdLong())) {
       return punishments.get(user.getIdLong());
     }
     return null;
@@ -140,7 +140,7 @@ public class BotService extends ListenerAdapter {
 
   private void unpunishUser(User user) {
     System.out.println("Removing " + user.getName());
-    punishments.remove(user);
+    punishments.remove(user.getIdLong());
   }
 
 }
