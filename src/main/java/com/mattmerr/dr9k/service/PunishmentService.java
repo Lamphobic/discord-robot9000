@@ -1,7 +1,7 @@
 package com.mattmerr.dr9k.service;
 
 import com.google.inject.Inject;
-import com.mattmerr.dr9k.model.PunishmentEntry;
+import com.mattmerr.dr9k.model.Punishment;
 import io.ebean.Database;
 import net.dv8tion.jda.api.entities.Message;
 import org.jetbrains.annotations.Contract;
@@ -32,7 +32,7 @@ public class PunishmentService {
 
   public void insertPunishment(Message message, int punishmentLevel){
     try{
-      var entry = new PunishmentEntry().setGuildId(message.getGuild().getId())
+      var entry = new Punishment().setGuildId(message.getGuild().getId())
           .setAuthorId(message.getAuthor().getId())
           .setSeverityLevel(punishmentLevel)
           .setPunishmentStart(Instant.now());
@@ -43,28 +43,25 @@ public class PunishmentService {
   }
 
   public boolean userHasPunishmentRecord(@NotNull Message message){
-    return db.createQuery(PunishmentEntry.class).where()
+    return db.createQuery(Punishment.class).where()
         .eq("guildId", message.getGuild().getId())
         .eq("authorId", message.getAuthor().getId()).exists();
   }
 
-  public PunishmentEntry getPunishment(@NotNull Message message){
-    return db.createQuery(PunishmentEntry.class).where()
+  public Punishment getPunishment(@NotNull Message message){
+    return db.createQuery(Punishment.class).where()
         .eq("guildId", message.getGuild().getId())
         .eq("authorId", message.getAuthor().getId()).findOne();
   }
 
   public int removePunishment(@NotNull Message message){
-    return db.createQuery(PunishmentEntry.class).where()
+    return db.createQuery(Punishment.class).where()
         .eq("guildId", message.getGuild().getId())
         .eq("authorId", message.getAuthor().getId()).delete();
   }
 
   public boolean handlePunishment(Message message) {
-    PunishmentEntry userPunishment = getPunishment(message);
-    String location = String.format("Guild Server: %s, Channel: %s",
-        message.getGuild().getName(),
-        message.getChannel().getName());
+    Punishment userPunishment = getPunishment(message);
     System.out.println("Punished user detected: " + message.getAuthor().getName());
     if (userPunishment.isOver()) {
       System.out.println("User is not currently muted.");
@@ -72,17 +69,24 @@ public class PunishmentService {
         removePunishmentRecord(message);
       }
     } else {
-      System.out.println("Removing message from user.");
-      message.delete().queue();
-      message.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage(String
-          .format(
-              "You are currently muted in %s. Please wait until your mute "
-                  + "ends in %s to try again.",
-              location, getPunishment(message).getHumanTimeRemaining()))
-          .queue());
+      enforcePunishment(message);
       return true;
     }
     return false;
+  }
+
+  public void enforcePunishment(Message message){
+    String location = String.format("Guild Server: %s, Channel: %s",
+        message.getGuild().getName(),
+        message.getChannel().getName());
+    System.out.println("Removing message from user.");
+    message.delete().queue();
+    message.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage(String
+        .format(
+            "You are currently muted in %s. Please wait until your mute "
+                + "ends in %s to try again.",
+            location, getPunishment(message).getHumanTimeRemaining()))
+        .queue());
   }
 
   public void punish(Message message) {
@@ -92,7 +96,7 @@ public class PunishmentService {
     System.out.println("Deleting message");
     message.delete().queue();
     if (userHasPunishmentRecord(message)) {
-      PunishmentEntry userPunishment = getPunishment(message);
+      Punishment userPunishment = getPunishment(message);
       int decay = userPunishment.getPunishmentDecay();
       punishUser(message, userPunishment.getSeverityLevel() - decay + 2);
       message.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage(String

@@ -21,7 +21,7 @@ public class BotService extends ListenerAdapter {
   private final BlacklistService blacklistService;
   private final PunishmentService punishmentService;
 
-  @Inject
+  @Inject //TODO: ConfigureationService
   BotService(JDA jda, BlacklistService blacklistService,
              PunishmentService punishmentService) {
     this.jda = jda;
@@ -64,7 +64,8 @@ public class BotService extends ListenerAdapter {
     System.out.printf(" from %s: %s\n", user.getName(),
         event.getMessage().getContentDisplay());
     if(userHasPunishmentRecord(message)){
-      if(punishmentService.handlePunishment(message)){
+      boolean userStillMuted = punishmentService.handlePunishment(message);
+      if(userStillMuted){
         return;
       }
     }

@@ -12,8 +12,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Entity
-@Table(name = "punishment_entries")
-public class PunishmentEntry {
+@Table(name = "punishments")
+public class Punishment {
 
   @Id
   private Long id;
@@ -36,7 +36,7 @@ public class PunishmentEntry {
     return id;
   }
 
-  public PunishmentEntry setId(Long id) {
+  public Punishment setId(Long id) {
     this.id = id;
     return this;
   }
@@ -45,7 +45,7 @@ public class PunishmentEntry {
     return guildId;
   }
 
-  public PunishmentEntry setGuildId(String guildId) {
+  public Punishment setGuildId(String guildId) {
     this.guildId = guildId;
     return this;
   }
@@ -54,7 +54,7 @@ public class PunishmentEntry {
     return authorId;
   }
 
-  public PunishmentEntry setAuthorId(String authorId) {
+  public Punishment setAuthorId(String authorId) {
     this.authorId = authorId;
     return this;
   }
@@ -63,7 +63,7 @@ public class PunishmentEntry {
     return severityLevel;
   }
 
-  public PunishmentEntry setSeverityLevel(int severityLevel) {
+  public Punishment setSeverityLevel(int severityLevel) {
     this.severityLevel = severityLevel;
     return this;
   }
@@ -72,7 +72,7 @@ public class PunishmentEntry {
     return punishmentStart;
   }
 
-  public PunishmentEntry setPunishmentStart(Instant punishmentStart) {
+  public Punishment setPunishmentStart(Instant punishmentStart) {
     this.punishmentStart = punishmentStart;
     return this;
   }
