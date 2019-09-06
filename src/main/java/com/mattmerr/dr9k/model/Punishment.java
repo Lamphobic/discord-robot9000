@@ -122,28 +122,28 @@ public class Punishment {
     seconds %= ChronoUnit.HOURS.getDuration().getSeconds();
     long minutes = seconds / ChronoUnit.MINUTES.getDuration().getSeconds();
     seconds %= ChronoUnit.MINUTES.getDuration().getSeconds();
-    String ret = ""; //TODO: swtich to stringbuilder" "
+    StringBuilder ret = new StringBuilder();
     if (years > 0) {
-      ret += String.format("%d years, ", years);
+      ret.append(String.format("%d years, ", years));
     }
     if (months > 0) {
-      ret += String.format("%d months, ", months);
+      ret.append(String.format("%d months, ", months));
     }
     if (weeks > 0) {
-      ret += String.format("%d weeks, ", weeks);
+      ret.append(String.format("%d weeks, ", weeks));
     }
     if (days > 0) {
-      ret += String.format("%d days, ", days);
+      ret.append(String.format("%d days, ", days));
     }
     if (hours > 0) {
-      ret += String.format("%d hours, ", hours);
+      ret.append(String.format("%d hours, ", hours));
     }
     if (minutes > 0) {
-      ret += String.format("%d minutes, ", minutes);
+      ret.append(String.format("%d minutes, ", minutes);
     }
     if (seconds > 0) {
-      ret += String.format("%d seconds", seconds);
+      ret.append(String.format("%d seconds", seconds));
     }
-    return ret;
+    return ret.toString();
   }
 }
