@@ -12,6 +12,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "blacklist_entries")
 public class BlacklistEntry extends Model {
+  private final int decaySeconds = 30; //21600 for 6 hours
 
   @Id
   private Long id;
