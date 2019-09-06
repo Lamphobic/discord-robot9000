@@ -77,7 +77,6 @@ public class BotService extends ListenerAdapter {
   private boolean messageDeservesPunishment(Message message) {
     boolean response = blacklistService.violatesUserUniqueness(message);
     if(!response){
-      blacklistService.insertMessage(message);
     }
     return response;
   }
