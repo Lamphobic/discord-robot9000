@@ -1,7 +1,6 @@
 package com.mattmerr.dr9k.service;
 
 import com.mattmerr.dr9k.BotConfiguration;
-import com.mattmerr.dr9k.Punishment;
 
 import com.google.inject.Inject;
 import net.dv8tion.jda.api.JDA;
@@ -13,10 +12,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.HashSet;
-
 public class BotService extends ListenerAdapter {
 
   private static final Logger logger =
@@ -24,14 +19,14 @@ public class BotService extends ListenerAdapter {
 
   private final JDA jda;
   private final BlacklistService blacklistService;
+  private final PunishmentService punishmentService;
 
-  private static HashSet<String> previous = new HashSet<>();
-  private static HashMap<Long, Punishment> punishments = new HashMap<>();
-
-  @Inject
-  BotService(JDA jda, BlacklistService blacklistService) {
+  @Inject //TODO: ConfigureationService
+  BotService(JDA jda, BlacklistService blacklistService,
+             PunishmentService punishmentService) {
     this.jda = jda;
     this.blacklistService = blacklistService;
+    this.punishmentService = punishmentService;
 
     this.jda.addEventListener(this);
     Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -59,92 +54,35 @@ public class BotService extends ListenerAdapter {
 
   @Override
   public void onMessageReceived(MessageReceivedEvent event) {
+    User user = event.getAuthor();
+    Message message = event.getMessage();
     if (event.getAuthor().isBot() || !event.getMessage().getChannelType()
         .equals(ChannelType.TEXT)) {
       return;
     }
-    User user = event.getAuthor();
-    //Message message = event.getMessage(); //TODO: make an issue about out
-    // message class.
-    String location = String.format("Guild Server: %s, Channel: %s",
-        event.getMessage().getGuild().getName(),
-        event.getMessage().getChannel().getName());
     System.out.print("We received a message");
     System.out.printf(" from %s: %s\n", user.getName(),
         event.getMessage().getContentDisplay());
-    if (userIsBeingPunished(user)) {
-      Punishment userPunishment = getPunishment(user);
-      System.out.println("Punished user detected: " + user.getName());
-      if (userPunishment.isOver()) {
-        System.out.println("User is not currently muted.");
-        if (userPunishment.getPunishmentDecayed()) {
-          unpunishUser(user);
-        }
-      } else {
-        System.out.println("Removing message from user.");
-        event.getMessage().delete().queue();
-        user.openPrivateChannel().queue((channel) -> channel.sendMessage(String
-            .format(
-                "You are currently muted in %s. Please wait until your mute "
-                    + "ends in %s to try again.",
-                location, getPunishment(user).getHumanTimeRemaining()))
-            .queue());
+    if(userHasPunishmentRecord(message)){
+      boolean userStillMuted = punishmentService.handlePunishment(message);
+      if(userStillMuted){
         return;
       }
     }
-    if (seenMessage(event.getMessage())) {
-      System.out.println("Muting " + user.getName());
-      event.getMessage().delete().queue();
-      if (userIsBeingPunished(user)) {
-        Punishment userPunishment = getPunishment(user);
-        int decay = userPunishment.getPunishmentDecay();
-
-        punishUser(user, userPunishment.getSeverityLevel() - decay + 2);
-        user.openPrivateChannel().queue((channel) -> channel.sendMessage(String
-            .format(
-                "You have been muted in %s for repeating %s. This mute will "
-                    + "last %s",
-                location, event.getMessage().getContentRaw(),
-                getPunishment(user).getHumanTimeRemaining())).queue());
-      } else {
-        punishUser(user, 1);
-        user.openPrivateChannel().queue((channel) -> channel.sendMessage(String
-            .format(
-                "You have been muted in %s for repeating %s. This mute will "
-                    + "last 2 seconds.",
-                location, event.getMessage().getContentRaw())).queue());
-      }
+    if(messageDeservesPunishment(message)){
+      punishmentService.punish(message);
     }
   }
 
-  private boolean seenMessage(Message message) {
+  private boolean messageDeservesPunishment(Message message) {
     boolean response = blacklistService.violatesUserUniqueness(message);
     if(!response){
-      blacklistService.insertMessage(message);
     }
     return response;
   }
 
-  private boolean userIsBeingPunished(User user) {
-    return punishments.containsKey(user.getIdLong());
-  }
-
-  private void punishUser(User user, int severity) {
-    Punishment p = new Punishment(severity, Instant.now());
-    System.out.println(p);
-    punishments.put(user.getIdLong(), p);
-  }
-
-  private Punishment getPunishment(User user) {
-    if (punishments.containsKey(user.getIdLong())) {
-      return punishments.get(user.getIdLong());
-    }
-    return null;
-  }
-
-  private void unpunishUser(User user) {
-    System.out.println("Removing " + user.getName());
-    punishments.remove(user.getIdLong());
+  private boolean userHasPunishmentRecord(Message message) {
+    return punishmentService.userHasPunishmentRecord(message);
   }
 
 }
