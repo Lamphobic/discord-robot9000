@@ -1,16 +1,14 @@
 package com.mattmerr.dr9k;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tomlj.Toml;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 public class BotConfiguration {
 
-  private static final Logger logger =
-      LoggerFactory.getLogger(BotConfiguration.class);
+  private static final Logger logger = LoggerFactory.getLogger(BotConfiguration.class);
 
   private String discordToken = null;
   private String discordBotName = null;
@@ -44,5 +42,4 @@ public class BotConfiguration {
   public String getDiscordBotName() {
     return discordBotName;
   }
-
 }

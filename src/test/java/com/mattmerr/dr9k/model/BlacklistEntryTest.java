@@ -1,9 +1,9 @@
 package com.mattmerr.dr9k.model;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import io.ebean.DB;
 import org.junit.Test;
-
-import static com.google.common.truth.Truth.assertThat;
 
 public class BlacklistEntryTest {
 
@@ -16,11 +16,12 @@ public class BlacklistEntryTest {
 
     DB.save(entry);
 
-    BlacklistEntry found = DB.createQuery(BlacklistEntry.class)
-        .where()
-        .eq("domain", "test_domain")
-        .eq("contents", "foo")
-        .findOne();
+    BlacklistEntry found =
+        DB.createQuery(BlacklistEntry.class)
+            .where()
+            .eq("domain", "test_domain")
+            .eq("contents", "foo")
+            .findOne();
 
     assertThat(found).isNotNull();
     assertThat(found.getDomain()).isEqualTo("test_domain");
