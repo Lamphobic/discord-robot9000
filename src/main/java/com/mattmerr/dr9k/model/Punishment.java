@@ -3,20 +3,18 @@ package com.mattmerr.dr9k.model;
 import com.mattmerr.dr9k.service.PunishmentService;
 import io.ebean.annotation.Length;
 import io.ebean.annotation.NotNull;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "punishments")
 public class Punishment {
 
-  @Id
-  private Long id;
+  @Id private Long id;
 
   @NotNull
   @Length(512)
@@ -26,11 +24,9 @@ public class Punishment {
   @Length(512)
   private String authorId;
 
-  @NotNull
-  private int severityLevel;
+  @NotNull private int severityLevel;
 
-  @NotNull
-  private Instant punishmentStart;
+  @NotNull private Instant punishmentStart;
 
   public Long getId() {
     return id;
@@ -139,7 +135,7 @@ public class Punishment {
       ret.append(String.format("%d hours, ", hours));
     }
     if (minutes > 0) {
-      ret.append(String.format("%d minutes, ", minutes);
+      ret.append(String.format("%d minutes, ", minutes));
     }
     if (seconds > 0) {
       ret.append(String.format("%d seconds", seconds));

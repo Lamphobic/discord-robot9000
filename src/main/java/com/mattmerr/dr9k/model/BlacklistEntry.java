@@ -3,18 +3,15 @@ package com.mattmerr.dr9k.model;
 import io.ebean.Model;
 import io.ebean.annotation.Length;
 import io.ebean.annotation.NotNull;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "blacklist_entries")
 public class BlacklistEntry extends Model {
 
-  @Id
-  private Long id;
+  @Id private Long id;
 
   @NotNull
   @Length(512)

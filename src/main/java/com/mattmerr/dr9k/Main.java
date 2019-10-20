@@ -1,8 +1,7 @@
 package com.mattmerr.dr9k;
 
-import com.mattmerr.dr9k.service.BotService;
-
 import com.google.inject.Guice;
+import com.mattmerr.dr9k.service.BotService;
 
 public class Main {
 
